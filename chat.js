@@ -32,7 +32,7 @@ class Connection {
   disconnect() {}
 }
 
-function chat(io) {
+const chat = (io) => {
   io.on("connection", (socket) => {
     new Connection(io, socket);
   });
@@ -54,6 +54,6 @@ function chat(io) {
   });
 
   io.oscClient = new Client("127.0.0.1", 3333);
-}
+};
 
 module.exports = chat;
