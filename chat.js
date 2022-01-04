@@ -7,6 +7,7 @@ class Connection {
 
     socket.on("building", (_data) => {
       this.io.oscClient.send("/building", JSON.stringify(_data));
+      socket.broadcast.emit("building", _data);
     });
 
     socket.on("compute eui", (_data) => {
