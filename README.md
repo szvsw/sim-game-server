@@ -1,6 +1,7 @@
 # Building Energy Use Intensity Simulation Game
 
 WIP!!!!!!!!!
+![Simulation Game](./public/ui-screenshot.png)
 
 Back-end for web-browser implementation of the EUI Simulation Game played in MIT 4.464: Environmental Technology in Buildings.
 
