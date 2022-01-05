@@ -52,6 +52,11 @@ const chat = (io) => {
     const eui = msg[1];
     io.emit("eui", eui);
   });
+  io.oscServer.on("/0/results", function (msg) {
+    const address = msg[0];
+    const results = JSON.parse(msg[1]);
+    io.emit("results", results);
+  });
 
   io.oscClient = new Client("127.0.0.1", 3333);
 };
