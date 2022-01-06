@@ -5,6 +5,10 @@ class Connection {
     this.socket = socket;
     this.io = io;
 
+    socket.on("sun-weather", (_data) => {
+      this.io.oscClient.send("/compute", JSON.stringify(_data));
+    });
+
     socket.on("building", (_data) => {
       this.io.oscClient.send("/building", JSON.stringify(_data));
       socket.broadcast.emit("building", _data);
@@ -58,7 +62,14 @@ const chat = (io) => {
     io.emit("results", results);
   });
 
-  io.oscClient = new Client("127.0.0.1", 3333);
+  io.oscServer.on("/response", function (msg) {
+    const address = msg[0];
+    const response = JSON.parse(msg[1]);
+    io.emit(response.ghCallback, response);
+  });
+
+  io.oscClientGH = new Client("127.0.0.1", 3333);
+  io.oscClient = new Client("127.0.0.1", 3335);
 };
 
 module.exports = chat;
