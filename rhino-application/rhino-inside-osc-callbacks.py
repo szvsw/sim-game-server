@@ -38,7 +38,7 @@ print("Finished Loading Libs")
 start = time.time()
 definition = GH_Document()
 archive = GH_Archive()
-archive.ReadFromFile(r"./operations.gh")
+archive.ReadFromFile(r"./rhino-application/operations.gh")
 middle = time.time()
 
 
@@ -62,12 +62,20 @@ def commandHandler(addr,additional_args,payload):
     args = data['args']
     outs = data['outs']
     nicknames = {'sun-weather' : 'SunVectorCalculatorWeatherFile', 'sun-coords': 'SunVectorCalculatorLatLong'}
-    objectNickName =  nicknames[callbackName]
+    try: 
+        objectNickName =  nicknames[callbackName]
+    except KeyError:
+        print("Command not supported.")
+        return
     gh_obj = None
     for ob in definition.Objects:
         if ob.NickName == objectNickName:
             gh_obj = ob
             break
+    if gh_obj == None:
+        print("Command not supported")
+        return
+
     
     for input in gh_obj.Params.Input:
         if input.NickName in args.keys():

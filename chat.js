@@ -6,6 +6,15 @@ class Connection {
     this.io = io;
 
     socket.on("sun-weather", (_data) => {
+      _data.ghCallback = "sun-weather";
+      _data.args = {
+        M: { value: _data.month, type: "integer" },
+        D: { value: _data.day, type: "integer" },
+        H: { value: _data.hour, type: "number" },
+      };
+      _data.outs = {
+        V: "Vector3D",
+      };
       this.io.oscClient.send("/compute", JSON.stringify(_data));
     });
 
@@ -63,6 +72,7 @@ const chat = (io) => {
   });
 
   io.oscServer.on("/response", function (msg) {
+    //TODO: only broadcast to room members
     const address = msg[0];
     const response = JSON.parse(msg[1]);
     io.emit(response.ghCallback, response);
