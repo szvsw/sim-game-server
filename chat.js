@@ -18,9 +18,23 @@ class Connection {
       this.io.oscClient.send("/compute", JSON.stringify(_data));
     });
 
+    socket.on("update cost", (_data) => {
+      _data.args = {
+        building: { value: { ..._data }, type: "json" },
+      };
+      _data.outs = {
+        cost: "number",
+        eui: "number",
+        model: "string",
+      };
+      // _data.ghCallback = "cost-calculator";
+      _data.ghCallback = "calculate-eui";
+      this.io.oscClient.send("/compute", JSON.stringify(_data));
+    });
+
     socket.on("building", (_data) => {
-      this.io.oscClient.send("/building", JSON.stringify(_data));
       socket.broadcast.emit("building", _data);
+      this.io.oscClientGH.send("/building", JSON.stringify(_data));
     });
 
     socket.on("compute eui", (_data) => {
@@ -29,13 +43,14 @@ class Connection {
           euiCalculationTriggers: 0,
         };
       this.io.logs.euiCalculationTriggers++;
-      this.io.oscClient.send("/computeEui", 1);
+      this.io.oscClientGH.send("/computeEui", 1);
       const clearComputeFlag = () => {
-        this.io.oscClient.send("/computeEui", 0);
+        this.io.oscClientGH.send("/computeEui", 0);
       };
-      setTimeout(clearComputeFlag.bind(this), 10000);
+      setTimeout(clearComputeFlag.bind(this), 1000);
       console.log("computing eui");
     });
+
     socket.on("disconnect", () => this.disconnect());
     socket.on("connect_error", (err) => {
       console.log(`connect_error due to ${err.message}`);
