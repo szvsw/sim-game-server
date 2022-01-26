@@ -44,7 +44,7 @@ args_typecasters = {'integer':lambda x: GH_Integer(int(x)), 'number' : lambda x:
 results_typecasters = {'Vector3D': lambda v: [v.X, v.Y, v.Z], 'number' : lambda x: x, 'string': lambda x: x}
 
 # Register objects/clusters in the definition to keys
-nicknames = {'sun-weather' : 'SunVectorCalculatorWeatherFile', 'sun-coords': 'SunVectorCalculatorLatLong', 'cost-calculator': "CostCalculator", "calculate-eui": "EUIComputer"}
+nicknames = {'sun-weather' : 'SunVectorCalculatorWeatherFile', 'sun-coords': 'SunVectorCalculatorLatLong', }#'cost-calculator': "CostCalculator", "calculate-eui": "EUIComputer"}
 
 
 def commandHandler(addr,additional_args,payload): 
